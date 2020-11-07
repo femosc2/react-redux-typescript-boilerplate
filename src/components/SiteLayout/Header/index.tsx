@@ -5,12 +5,18 @@ import { IStore } from 'store';
 import { Header } from './Header';
 import { setCurrentTab } from './redux/actions';
 import { compose } from 'recompose';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-type Props =  ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
+type Props = RouteComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
 
-const HeaderContainer: React.FC<Props> = () => {
+const HeaderContainer: React.FC<Props> = (props) => {
+
+  const switchTab = (tabName: string) => {
+    props.history.push(`/${ tabName }`);
+  };
+
   return (
-    <Header />
+    <Header switchTab={ switchTab } />
   );
 };
 
@@ -28,5 +34,6 @@ const mapDispatchToProps = (dispatch: any) => {
   
 export default compose<Props, Record<string, unknown>>(
   connect(mapStateToProps, mapDispatchToProps),
+  withRouter,
 )(HeaderContainer);
 
